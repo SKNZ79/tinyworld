@@ -1,0 +1,4 @@
+service {
+	"tinyworld.tinyDB::EuropeanCountries" as "Euros"
+	keys generate local "ID";
+}

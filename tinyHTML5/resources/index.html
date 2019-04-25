@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv='Content-Type' content='text/html;charset=UTF-8' />
+<title>tinyHTML5</title>
+<!-- 1.) Load SAPUI5 (from a remote server), select theme and control library -->
+<script src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
+	id="sap-ui-bootstrap" data-sap-ui-libs="sap.m, sap.ui.commons, sap.ui.table"
+	data-sap-ui-theme="sap_bluecrystal">
+</script>
+<!-- 2.) Create a UI5 button and place it onto the page -->
+<script>
+	// create the button instance
+	var myButton = new sap.m.Button("btn");
+
+	// set properties, e.g. the text (there is also a shorter way of setting several properties)
+	myButton.setText("Hello Tiny World!");
+
+	// attach an action to the button's "press" event (use jQuery to fade out the button)
+	myButton.attachPress(function(){$("#btn").fadeOut()});
+
+	// place the button into the HTML element defined below
+	//myButton.placeAt("uiArea");
+	////////
+	var oModel = new sap.ui.model.odata.ODataModel("/euro.xsodata", true);
+	var oTable = new sap.ui.table.Table({
+		title: "Countries in Europe"
+	});
+	
+	oTable.addColumn(new sap.ui.table.Column({
+		label: "Name of Country", 
+		template: "name"
+	}));
+	
+	oTable.setModel(oModel);
+	oTable.bindRows("/Euros");
+	oTable.placeAt("uiArea");
+
+</script>
+</head>
+<body class="sapUiBody">
+	<div id="uiArea"></div>
+</body>
+</html>

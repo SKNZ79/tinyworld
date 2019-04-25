@@ -1,0 +1,28 @@
+PROCEDURE "tinyworld.tinyDB::insertCountry"( 
+IN im_country NVARCHAR(100), im_continent NVARCHAR(100),
+OUT ex_error NVARCHAR(100))
+   Language SQLSCRIPT
+   SQL SECURITY INVOKER AS
+   --DEFAULT SCHEMA <default_schema_name>
+   --READS SQL DATA AS
+BEGIN
+	declare nr_of_continents integer;
+	declare nr_of_countries integer;
+	select count(*) into nr_of_continents
+	from "tinyworld.tinyDB::tinyf.world"
+	where "continent" = im_continent;
+	
+	if :nr_of_continents = 0 then
+		ex_error := 'ERROR: Continent ' || :im_continent || ' does not exist.';
+	else
+		select count(*) into nr_of_countries
+		from "tinyworld.tinyDB::tinyf.country"
+		where "name" = im_country;		
+		
+		if :nr_of_countries > 0 then
+			ex_error := 'ERROR: Country ' || :im_country || ' already exists.';
+		else
+			insert into "tinyworld.tinyDB::tinyf.country" values (im_country, im_continent);
+		end if;
+	end if;
+END;
